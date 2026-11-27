@@ -1,17 +1,18 @@
-﻿using exam_system.Domain.Common;
-using exam_system.Domain.Common.Interfaces;
-using exam_system.Domain.Entities.Quiz;
+﻿using exam_system.Common.Interfaces;
+using exam_system.Domain.Common;
+using exam_system.Domain.Entities.Quizzes;
+using exam_system.Domain.Entities.Enrollments;
 
 namespace exam_system.Domain.Entities.Diplomas
 {
-    public class Diploma : AuditableEntity<Guid> ,ISoftDeletable
+    public class Diploma : BaseEntity<Guid> ,ISoftDeletable
     {
         public string Title { get; set; }
         public string ?Description { get; set; }
-        public bool IsDeletable { get; set; }
+        public bool IsDeleted { get; set; }
         public DateTime? DeletedAt { get; set; }
-        public ICollection<Enrollement> Enrollements { get; set; } = new List<Enrollement>();
-        public ICollection<Quiz> Quizess { get; set; } = new List<Quiz>();
+        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+        public ICollection<Quiz> Quizzes { get; set; } = new List<Quiz>();
 
     }
 }

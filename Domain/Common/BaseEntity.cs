@@ -1,8 +1,8 @@
-using exam_system.Domain.Common.Interfaces;
+using exam_system.Common.Interfaces;
 
 namespace exam_system.Domain.Common;
 
-public abstract class AuditableEntity<TId> : IEntity<TId> 
+public abstract class BaseEntity<TId> : IEntity<TId> 
 {
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }

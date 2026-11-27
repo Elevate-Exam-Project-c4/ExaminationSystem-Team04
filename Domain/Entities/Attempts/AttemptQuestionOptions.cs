@@ -1,9 +1,9 @@
 ﻿using exam_system.Domain.Common;
-using exam_system.Domain.Entities.Question;
+using exam_system.Domain.Entities.Questions;
 
 namespace exam_system.Domain.Entities.Attempts
 {
-    public class AttemptOption : AuditableEntity<Guid>
+    public class AttemptQuestionOptions : BaseEntity<Guid>
     {
         public bool IsCorrect { get; set; }
         public string OptionText { get; set; }

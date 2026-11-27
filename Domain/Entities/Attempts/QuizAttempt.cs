@@ -1,11 +1,12 @@
-﻿using exam_system.Domain.Common;
-using exam_system.Domain.Common.Enums;
-using exam_system.Domain.Common.Interfaces;
+﻿using exam_system.Common.Enums;
+using exam_system.Common.Interfaces;
+using exam_system.Domain.Common;
 using exam_system.Domain.Entities.Identity;
+using exam_system.Domain.Entities.Quizzes;
 
 namespace exam_system.Domain.Entities.Attempts
 {
-    public class QuizAttempt : AuditableEntity<Guid> , ISoftDeletable
+    public class QuizAttempt : BaseEntity<Guid> , ISoftDeletable
     {
         public Guid StudentId { get; set; }
         public Guid QuizId { get; set; }
@@ -24,8 +25,8 @@ namespace exam_system.Domain.Entities.Attempts
         public string QuizTitleSnapShot { get; set; }
 
 
-      public  bool IsDeletable { get; set; }
-      public DateTime DeletedAt { get; set; }
+      public  bool IsDeleted { get; set; }
+      public DateTime? DeletedAt { get; set; }
         public ICollection<AttemptQuestion> Questions { get; set; }
      = new List<AttemptQuestion>();
 

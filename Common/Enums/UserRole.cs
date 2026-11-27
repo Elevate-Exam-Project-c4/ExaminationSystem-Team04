@@ -1,4 +1,4 @@
-﻿namespace exam_system.Domain.Common.Enums
+﻿namespace exam_system.Common.Enums
 {
     public enum UserRole
     {

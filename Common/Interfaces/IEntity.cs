@@ -1,4 +1,4 @@
-﻿namespace exam_system.Domain.Common.Interfaces
+﻿namespace exam_system.Common.Interfaces
 {
     public interface IEntity<TId>
     {

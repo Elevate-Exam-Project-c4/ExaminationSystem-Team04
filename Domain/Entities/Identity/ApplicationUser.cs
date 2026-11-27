@@ -1,8 +1,8 @@
-﻿using exam_system.Domain.Common.Enums;
-using exam_system.Domain.Common.Interfaces;
+﻿using exam_system.Common.Enums;
+using exam_system.Common.Interfaces;
+using exam_system.Domain.Common.Enums;
 using exam_system.Domain.Entities.Attempts;
-using exam_system.Domain.Entities.Enrollement;
-using Microsoft.AspNet.Identity.EntityFramework;
+using exam_system.Domain.Entities.Enrollments;
 using Microsoft.AspNetCore.Identity;
 namespace exam_system.Domain.Entities.Identity
 {
@@ -42,6 +42,7 @@ namespace exam_system.Domain.Entities.Identity
 
         
         public ICollection<Enrollment> Enrollments { get; set; }
+
             = new List<Enrollment>();
 
         

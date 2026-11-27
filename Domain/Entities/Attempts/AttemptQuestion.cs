@@ -1,9 +1,9 @@
 ﻿using exam_system.Domain.Common;
-using exam_system.Domain.Entities.Question;
+using exam_system.Domain.Entities.Questions;
 
 namespace exam_system.Domain.Entities.Attempts
 {
-    public class AttemptQuestion : AuditableEntity<Guid>
+    public class AttemptQuestion : BaseEntity<Guid>
     {
         public Guid? OriginalQuestionId {  get; set; }
         public Guid AttemptId { get;set; }
@@ -12,11 +12,11 @@ namespace exam_system.Domain.Entities.Attempts
         public int OrderIndex { get; set; }
         public QuizAttempt Attempt { get; set; }
         
-        public ICollection<AttemptOption> Options { get; set; }
-       = new List<AttemptOption>();
+        public ICollection<AttemptQuestionOptions> Options { get; set; }
+       = new List<AttemptQuestionOptions>();
         public ICollection<AttemptAnswer> Answers { get; set; }
        = new List<AttemptAnswer>();
 
-        public Question.Question OriginalQuestion { get; set; }
+        public Questions.Question OriginalQuestion { get; set; }
     }
 }

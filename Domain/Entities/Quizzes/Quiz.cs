@@ -1,12 +1,12 @@
-﻿using exam_system.Domain.Common;
-using exam_system.Domain.Common.Enums;
-using exam_system.Domain.Common.Interfaces;
+﻿using exam_system.Common.Enums;
+using exam_system.Common.Interfaces;
+using exam_system.Domain.Common;
 using exam_system.Domain.Entities.Attempts;
 using exam_system.Domain.Entities.Diplomas;
 
-namespace exam_system.Domain.Entities.Quiz
+namespace exam_system.Domain.Entities.Quizzes
 {
-    public class Quiz :AuditableEntity<Guid> ,ISoftDeletable
+    public class Quiz : BaseEntity<Guid> ,ISoftDeletable
     {
         public Guid DiplomaId { get; set; }
         public Diploma Diploma { get; set; }
@@ -21,8 +21,8 @@ namespace exam_system.Domain.Entities.Quiz
         public DateTime ?PublishedAt {  get; set; }
 
 
-        bool IsDeletable { get; set; }
-        DateTime? DeletedAt { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedAt { get; set; }
         public ICollection<QuizQuestion> QuizQuestions { get; set; }
       = new List<QuizQuestion>();
 

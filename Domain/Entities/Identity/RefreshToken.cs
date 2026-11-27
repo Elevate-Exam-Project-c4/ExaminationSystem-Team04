@@ -1,9 +1,9 @@
-﻿using exam_system.Domain.Common;
-using exam_system.Domain.Common.Interfaces;
+﻿using exam_system.Common.Interfaces;
+using exam_system.Domain.Common;
 
 namespace exam_system.Domain.Entities.Identity
 {
-    public class RefreshToken : AuditableEntity<int>, ISoftDeletable
+    public class RefreshToken : BaseEntity<int>, ISoftDeletable
     {
         public Guid UserId { get; set; }
 

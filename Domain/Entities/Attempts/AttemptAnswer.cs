@@ -1,9 +1,9 @@
-﻿using exam_system.Domain.Common;
-using exam_system.Domain.Common.Interfaces;
+﻿using exam_system.Common.Interfaces;
+using exam_system.Domain.Common;
 
 namespace exam_system.Domain.Entities.Attempts
 {
-    public class AttemptAnswer : AuditableEntity<Guid> , ISoftDeletable
+    public class AttemptAnswer : BaseEntity<int> , ISoftDeletable
     {
 
         public Guid AttemptId { get; set; }
@@ -15,14 +15,14 @@ namespace exam_system.Domain.Entities.Attempts
 
         public AttemptQuestion AttemptQuestion { get; set; } = null!;
 
-        public AttemptOption? SelectedOption { get; set; }
+        public AttemptQuestionOptions? SelectedOption { get; set; }
 
 
 
         public DateTime AnsweredAt { get; set; }
-        public bool? IsCoorect {  get; set; }
-        bool IsDeletable { get; set; }
-        DateTime? DeletedAt { get; set; }
+        public bool? IsCorrect {  get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedAt { get; set; }
 
     }
 }

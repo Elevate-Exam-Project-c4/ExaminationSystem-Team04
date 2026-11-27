@@ -1,9 +1,9 @@
-﻿using exam_system.Domain.Common;
-using exam_system.Domain.Common.Interfaces;
+﻿using exam_system.Common.Interfaces;
+using exam_system.Domain.Common;
 
 namespace exam_system.Domain.Entities.Identity
 {
-    public class OtpCode : AuditableEntity<int>, ISoftDeletable
+    public class OtpCode : BaseEntity<int>, ISoftDeletable
     {
         public string Email { get; set; } = string.Empty;
 

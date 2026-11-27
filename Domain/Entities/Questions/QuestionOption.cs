@@ -1,12 +1,12 @@
-﻿using exam_system.Domain.Common;
-using exam_system.Domain.Common.Interfaces;
+﻿using exam_system.Common.Interfaces;
+using exam_system.Domain.Common;
 
-namespace exam_system.Domain.Entities.Question
+namespace exam_system.Domain.Entities.Questions
 {
-    public class QuestionOption : AuditableEntity<Guid> , ISoftDeletable
+    public class QuestionOption : BaseEntity<Guid> , ISoftDeletable
     {
        public bool IsCorrect { get; set; }
-       public bool IsDeletable { get; set; }
+       public bool IsDeleted { get; set; }
        public DateTime? DeletedAt { get; set; }
        public int OrderIndex { get; set; }
        public Question Question { get; set; }
