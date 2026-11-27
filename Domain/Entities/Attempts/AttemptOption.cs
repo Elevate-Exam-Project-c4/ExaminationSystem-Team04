@@ -13,5 +13,6 @@ namespace exam_system.Domain.Entities.Attempts
         public ICollection<AttemptAnswer> Answers { get; set; }
        = new List<AttemptAnswer>();
 
+
     }
 }
