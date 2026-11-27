@@ -1,5 +1,6 @@
 ﻿using exam_system.Domain.Common;
 using exam_system.Domain.Common.Interfaces;
+using exam_system.Domain.Entities.Attempts;
 using exam_system.Domain.Entities.Quiz;
 
 namespace exam_system.Domain.Entities.Question
@@ -14,5 +15,7 @@ namespace exam_system.Domain.Entities.Question
        = new List<QuestionOption>();
         public ICollection<QuizQuestion> QuizQuestions { get; set; }
       = new List<QuizQuestion>();
+
+        public ICollection<AttemptQuestion> AttemptQuestions { get; set; } = new List<AttemptQuestion>();
     }
 }
