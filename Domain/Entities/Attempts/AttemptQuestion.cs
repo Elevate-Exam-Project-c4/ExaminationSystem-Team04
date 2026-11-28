@@ -9,13 +9,12 @@ namespace exam_system.Domain.Entities.Attempts
         public Guid AttemptId { get;set; }
         public string QuestionText { get; set; }
         public string ?Explanation { get; set; }
-        public int OrderIndex { get; set; }
+        public int OrderIndex { get; set; } 
         public QuizAttempt Attempt { get; set; }
         
         public ICollection<AttemptQuestionOptions> Options { get; set; }
        = new List<AttemptQuestionOptions>();
-        public ICollection<AttemptAnswer> Answers { get; set; }
-       = new List<AttemptAnswer>();
+        public AttemptAnswer? Answer { get; set; }
 
         public Questions.Question OriginalQuestion { get; set; }
     }
