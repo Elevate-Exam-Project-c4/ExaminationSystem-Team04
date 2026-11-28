@@ -12,8 +12,8 @@ using exam_system.Persistence.Context;
 namespace exam_system.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261128161330_MakeSubmittedAtRequired")]
-    partial class MakeSubmittedAtRequired
+    [Migration("20261128190316_Intial Create")]
+    partial class IntialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

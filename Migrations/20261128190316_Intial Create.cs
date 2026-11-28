@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace exam_system.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class IntialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -76,7 +76,7 @@ namespace exam_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Option",
+                name: "Options",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -88,7 +88,7 @@ namespace exam_system.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Option", x => x.Id);
+                    table.PrimaryKey("PK_Options", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -114,7 +114,7 @@ namespace exam_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Question",
+                name: "Questions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -127,7 +127,7 @@ namespace exam_system.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Question", x => x.Id);
+                    table.PrimaryKey("PK_Questions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -385,7 +385,7 @@ namespace exam_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "QuestionOption",
+                name: "QuestionOptions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -400,23 +400,23 @@ namespace exam_system.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuestionOption", x => x.Id);
+                    table.PrimaryKey("PK_QuestionOptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_QuestionOption_Option_OptionId",
+                        name: "FK_QuestionOptions_Options_OptionId",
                         column: x => x.OptionId,
-                        principalTable: "Option",
+                        principalTable: "Options",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_QuestionOption_Question_QuestionId",
+                        name: "FK_QuestionOptions_Questions_QuestionId",
                         column: x => x.QuestionId,
-                        principalTable: "Question",
+                        principalTable: "Questions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "QuizAttempt",
+                name: "QuizAttempts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -425,35 +425,42 @@ namespace exam_system.Migrations
                     QuizId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AttemptStartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AttemptDeadline = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NavigationVersion = table.Column<int>(type: "int", nullable: false),
-                    CurrentQuestionIndex = table.Column<int>(type: "int", nullable: false),
-                    SubmittedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AttemptScore = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IsPassed = table.Column<bool>(type: "bit", nullable: false),
-                    PassScoreSnapShot = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    QuizTitleSnapShot = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NavigationVersion = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    CurrentQuestionIndex = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    SubmittedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    AttemptScore = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false, defaultValue: 0m),
+                    IsPassed = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    PassScoreSnapShot = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    QuizTitleSnapShot = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuizAttempt", x => x.Id);
+                    table.PrimaryKey("PK_QuizAttempts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_QuizAttempt_AspNetUsers_StudentId",
+                        name: "FK_QuizAttempts_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_QuizAttempts_AspNetUsers_StudentId",
                         column: x => x.StudentId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_QuizAttempt_Quizzes_QuizId",
+                        name: "FK_QuizAttempts_Quizzes_QuizId",
                         column: x => x.QuizId,
                         principalTable: "Quizzes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_QuizAttempt_Quizzes_QuizId1",
+                        name: "FK_QuizAttempts_Quizzes_QuizId1",
                         column: x => x.QuizId1,
                         principalTable: "Quizzes",
                         principalColumn: "Id",
@@ -478,9 +485,9 @@ namespace exam_system.Migrations
                 {
                     table.PrimaryKey("PK_QuizQuestion", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_QuizQuestion_Question_QuestionId",
+                        name: "FK_QuizQuestion_Questions_QuestionId",
                         column: x => x.QuestionId,
-                        principalTable: "Question",
+                        principalTable: "Questions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -498,7 +505,7 @@ namespace exam_system.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AttemptQuestion",
+                name: "AttemptQuestions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -512,16 +519,17 @@ namespace exam_system.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AttemptQuestion", x => x.Id);
+                    table.PrimaryKey("PK_AttemptQuestions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AttemptQuestion_Question_OriginalQuestionId",
+                        name: "FK_AttemptQuestions_Questions_OriginalQuestionId",
                         column: x => x.OriginalQuestionId,
-                        principalTable: "Question",
-                        principalColumn: "Id");
+                        principalTable: "Questions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AttemptQuestion_QuizAttempt_AttemptId",
+                        name: "FK_AttemptQuestions_QuizAttempts_AttemptId",
                         column: x => x.AttemptId,
-                        principalTable: "QuizAttempt",
+                        principalTable: "QuizAttempts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -543,21 +551,21 @@ namespace exam_system.Migrations
                 {
                     table.PrimaryKey("PK_AttemptQuestionOptions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AttemptQuestionOptions_AttemptQuestion_AttemptQuestionId",
+                        name: "FK_AttemptQuestionOptions_AttemptQuestions_AttemptQuestionId",
                         column: x => x.AttemptQuestionId,
-                        principalTable: "AttemptQuestion",
+                        principalTable: "AttemptQuestions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AttemptQuestionOptions_Option_OriginalOptionId",
+                        name: "FK_AttemptQuestionOptions_Options_OriginalOptionId",
                         column: x => x.OriginalOptionId,
-                        principalTable: "Option",
+                        principalTable: "Options",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AttemptAnswer",
+                name: "AttemptAnswers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -569,29 +577,36 @@ namespace exam_system.Migrations
                     IsCorrect = table.Column<bool>(type: "bit", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    QuizAttemptId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AttemptAnswer", x => x.Id);
+                    table.PrimaryKey("PK_AttemptAnswers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AttemptAnswer_AttemptQuestionOptions_SelectedOptionId",
+                        name: "FK_AttemptAnswers_AttemptQuestionOptions_SelectedOptionId",
                         column: x => x.SelectedOptionId,
                         principalTable: "AttemptQuestionOptions",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AttemptAnswer_AttemptQuestion_AttemptQuestionId",
+                        name: "FK_AttemptAnswers_AttemptQuestions_AttemptQuestionId",
                         column: x => x.AttemptQuestionId,
-                        principalTable: "AttemptQuestion",
+                        principalTable: "AttemptQuestions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AttemptAnswer_QuizAttempt_AttemptId",
+                        name: "FK_AttemptAnswers_QuizAttempts_AttemptId",
                         column: x => x.AttemptId,
-                        principalTable: "QuizAttempt",
+                        principalTable: "QuizAttempts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AttemptAnswers_QuizAttempts_QuizAttemptId",
+                        column: x => x.QuizAttemptId,
+                        principalTable: "QuizAttempts",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -636,39 +651,47 @@ namespace exam_system.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AttemptAnswer_AttemptId",
-                table: "AttemptAnswer",
+                name: "IX_AttemptAnswers_AttemptId",
+                table: "AttemptAnswers",
                 column: "AttemptId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AttemptAnswer_AttemptQuestionId",
-                table: "AttemptAnswer",
-                column: "AttemptQuestionId");
+                name: "IX_AttemptAnswers_AttemptQuestionId",
+                table: "AttemptAnswers",
+                column: "AttemptQuestionId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AttemptAnswer_SelectedOptionId",
-                table: "AttemptAnswer",
+                name: "IX_AttemptAnswers_QuizAttemptId",
+                table: "AttemptAnswers",
+                column: "QuizAttemptId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AttemptAnswers_SelectedOptionId",
+                table: "AttemptAnswers",
                 column: "SelectedOptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AttemptQuestion_AttemptId",
-                table: "AttemptQuestion",
-                column: "AttemptId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AttemptQuestion_OriginalQuestionId",
-                table: "AttemptQuestion",
-                column: "OriginalQuestionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AttemptQuestionOptions_AttemptQuestionId",
+                name: "IX_AttemptQuestionOptions_AttemptQuestionId_OptionOrder",
                 table: "AttemptQuestionOptions",
-                column: "AttemptQuestionId");
+                columns: new[] { "AttemptQuestionId", "OptionOrder" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AttemptQuestionOptions_OriginalOptionId",
                 table: "AttemptQuestionOptions",
                 column: "OriginalOptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AttemptQuestions_AttemptId_OrderIndex",
+                table: "AttemptQuestions",
+                columns: new[] { "AttemptId", "OrderIndex" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AttemptQuestions_OriginalQuestionId",
+                table: "AttemptQuestions",
+                column: "OriginalQuestionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Enrollments_DiplomaId",
@@ -682,6 +705,11 @@ namespace exam_system.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Options_IsDeleted",
+                table: "Options",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PasswordResetCodes_UserId",
                 table: "PasswordResetCodes",
                 column: "UserId");
@@ -692,29 +720,60 @@ namespace exam_system.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_QuestionOption_OptionId",
-                table: "QuestionOption",
+                name: "IX_QuestionOptions_OptionId",
+                table: "QuestionOptions",
                 column: "OptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_QuestionOption_QuestionId",
-                table: "QuestionOption",
-                column: "QuestionId");
+                name: "IX_QuestionOptions_QuestionId",
+                table: "QuestionOptions",
+                column: "QuestionId",
+                unique: true,
+                filter: "[IsCorrect] = 1 AND [IsDeleted] = 0");
 
             migrationBuilder.CreateIndex(
-                name: "IX_QuizAttempt_QuizId",
-                table: "QuizAttempt",
+                name: "IX_QuestionOptions_QuestionId_OptionId",
+                table: "QuestionOptions",
+                columns: new[] { "QuestionId", "OptionId" },
+                unique: true,
+                filter: "[IsDeleted] = 0");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuestionOptions_QuestionId_OrderIndex",
+                table: "QuestionOptions",
+                columns: new[] { "QuestionId", "OrderIndex" },
+                unique: true,
+                filter: "[IsDeleted] = 0");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Questions_IsDeleted",
+                table: "Questions",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuizAttempts_ApplicationUserId",
+                table: "QuizAttempts",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuizAttempts_QuizId",
+                table: "QuizAttempts",
                 column: "QuizId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_QuizAttempt_QuizId1",
-                table: "QuizAttempt",
+                name: "IX_QuizAttempts_QuizId1",
+                table: "QuizAttempts",
                 column: "QuizId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_QuizAttempt_StudentId",
-                table: "QuizAttempt",
+                name: "IX_QuizAttempts_StudentId",
+                table: "QuizAttempts",
                 column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuizAttempts_StudentId_QuizId",
+                table: "QuizAttempts",
+                columns: new[] { "StudentId", "QuizId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_QuizQuestion_QuestionId",
@@ -766,7 +825,7 @@ namespace exam_system.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "AttemptAnswer");
+                name: "AttemptAnswers");
 
             migrationBuilder.DropTable(
                 name: "Enrollments");
@@ -781,7 +840,7 @@ namespace exam_system.Migrations
                 name: "PasswordResetTokens");
 
             migrationBuilder.DropTable(
-                name: "QuestionOption");
+                name: "QuestionOptions");
 
             migrationBuilder.DropTable(
                 name: "QuizQuestion");
@@ -796,16 +855,16 @@ namespace exam_system.Migrations
                 name: "AttemptQuestionOptions");
 
             migrationBuilder.DropTable(
-                name: "AttemptQuestion");
+                name: "AttemptQuestions");
 
             migrationBuilder.DropTable(
-                name: "Option");
+                name: "Options");
 
             migrationBuilder.DropTable(
-                name: "Question");
+                name: "Questions");
 
             migrationBuilder.DropTable(
-                name: "QuizAttempt");
+                name: "QuizAttempts");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
