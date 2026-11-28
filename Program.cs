@@ -1,4 +1,5 @@
 using exam_system.Persistence.Context;
+using exam_system.Persistence;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ builder.Services.AddSwaggerGen();
 // Add MediatR and FluentValidation services
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+builder.Services.AddPersistenceServices();
 // Add your other services and configurations here
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
