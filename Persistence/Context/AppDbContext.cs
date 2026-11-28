@@ -2,6 +2,7 @@ using exam_system.Domain.Entities.Attempts;
 using exam_system.Domain.Entities.Diplomas;
 using exam_system.Domain.Entities.Enrollments;
 using exam_system.Domain.Entities.Identity;
+using exam_system.Domain.Entities.Questions;
 using exam_system.Domain.Entities.Quizzes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -34,6 +35,11 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid
     public DbSet<AttemptQuestion> AttemptQuestion { get; set; }
     public DbSet<AttemptQuestionOptions> AttemptQuestionOptions { get; set; }
     public DbSet<AttemptAnswer> AttemptAnswer { get; set; }
+
+    // Questions Tables
+    public DbSet<Question> Questions { get; set; }
+    public DbSet<Option> Options { get; set; }
+    public DbSet<QuestionOption> QuestionOptions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
