@@ -15,7 +15,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid
     public AppDbContext(DbContextOptions<AppDbContext> options)
     : base(options)
     {
-    }
+    } 
     //Identity DbSets
     public DbSet<OtpCode> OtpCodes { get; set; }
     public DbSet<PasswordResetCode> PasswordResetCodes { get; set; }
