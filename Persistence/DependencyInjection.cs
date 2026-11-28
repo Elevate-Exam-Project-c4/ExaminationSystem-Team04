@@ -6,7 +6,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPersistenceServices(this IServiceCollection services)
     {
-        services.AddScoped<IGenericRepository,GenericRepository>();
+        services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }

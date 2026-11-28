@@ -182,6 +182,9 @@ namespace exam_system.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("QuizAttemptId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("SelectedOptionId")
                         .HasColumnType("uniqueidentifier");
 
@@ -192,11 +195,14 @@ namespace exam_system.Migrations
 
                     b.HasIndex("AttemptId");
 
-                    b.HasIndex("AttemptQuestionId");
+                    b.HasIndex("AttemptQuestionId")
+                        .IsUnique();
+
+                    b.HasIndex("QuizAttemptId");
 
                     b.HasIndex("SelectedOptionId");
 
-                    b.ToTable("AttemptAnswer");
+                    b.ToTable("AttemptAnswers", (string)null);
                 });
 
             modelBuilder.Entity("exam_system.Domain.Entities.Attempts.AttemptQuestion", b =>
@@ -229,11 +235,12 @@ namespace exam_system.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AttemptId");
-
                     b.HasIndex("OriginalQuestionId");
 
-                    b.ToTable("AttemptQuestion");
+                    b.HasIndex("AttemptId", "OrderIndex")
+                        .IsUnique();
+
+                    b.ToTable("AttemptQuestions", (string)null);
                 });
 
             modelBuilder.Entity("exam_system.Domain.Entities.Attempts.AttemptQuestionOptions", b =>
@@ -266,11 +273,12 @@ namespace exam_system.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AttemptQuestionId");
-
                     b.HasIndex("OriginalOptionId");
 
-                    b.ToTable("AttemptQuestionOptions");
+                    b.HasIndex("AttemptQuestionId", "OptionOrder")
+                        .IsUnique();
+
+                    b.ToTable("AttemptQuestionOptions", (string)null);
                 });
 
             modelBuilder.Entity("exam_system.Domain.Entities.Attempts.QuizAttempt", b =>
@@ -279,11 +287,17 @@ namespace exam_system.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ApplicationUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("AttemptDeadline")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("AttemptScore")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)")
+                        .HasDefaultValue(0m);
 
                     b.Property<DateTime>("AttemptStartDate")
                         .HasColumnType("datetime2");
@@ -292,7 +306,9 @@ namespace exam_system.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CurrentQuestionIndex")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
@@ -301,13 +317,18 @@ namespace exam_system.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsPassed")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<int>("NavigationVersion")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<decimal>("PassScoreSnapShot")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(5, 2)
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<Guid>("QuizId")
                         .HasColumnType("uniqueidentifier");
@@ -317,12 +338,18 @@ namespace exam_system.Migrations
 
                     b.Property<string>("QuizTitleSnapShot")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("SubmittedAt")
+                    b.Property<DateTime?>("SubmittedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -330,13 +357,17 @@ namespace exam_system.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("QuizId");
 
                     b.HasIndex("QuizId1");
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("QuizAttempt");
+                    b.HasIndex("StudentId", "QuizId");
+
+                    b.ToTable("QuizAttempts", (string)null);
                 });
 
             modelBuilder.Entity("exam_system.Domain.Entities.Diplomas.Diploma", b =>
@@ -755,7 +786,9 @@ namespace exam_system.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Option");
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Options", (string)null);
                 });
 
             modelBuilder.Entity("exam_system.Domain.Entities.Questions.Question", b =>
@@ -785,7 +818,9 @@ namespace exam_system.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Question");
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("Questions", (string)null);
                 });
 
             modelBuilder.Entity("exam_system.Domain.Entities.Questions.QuestionOption", b =>
@@ -822,9 +857,19 @@ namespace exam_system.Migrations
 
                     b.HasIndex("OptionId");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("QuestionId")
+                        .IsUnique()
+                        .HasFilter("[IsCorrect] = 1 AND [IsDeleted] = 0");
 
-                    b.ToTable("QuestionOption");
+                    b.HasIndex("QuestionId", "OptionId")
+                        .IsUnique()
+                        .HasFilter("[IsDeleted] = 0");
+
+                    b.HasIndex("QuestionId", "OrderIndex")
+                        .IsUnique()
+                        .HasFilter("[IsDeleted] = 0");
+
+                    b.ToTable("QuestionOptions", (string)null);
                 });
 
             modelBuilder.Entity("exam_system.Domain.Entities.Quizzes.Quiz", b =>
@@ -989,20 +1034,25 @@ namespace exam_system.Migrations
             modelBuilder.Entity("exam_system.Domain.Entities.Attempts.AttemptAnswer", b =>
                 {
                     b.HasOne("exam_system.Domain.Entities.Attempts.QuizAttempt", "Attempt")
-                        .WithMany("Answers")
+                        .WithMany()
                         .HasForeignKey("AttemptId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("exam_system.Domain.Entities.Attempts.AttemptQuestion", "AttemptQuestion")
-                        .WithMany("Answers")
-                        .HasForeignKey("AttemptQuestionId")
+                        .WithOne("Answer")
+                        .HasForeignKey("exam_system.Domain.Entities.Attempts.AttemptAnswer", "AttemptQuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("exam_system.Domain.Entities.Attempts.QuizAttempt", null)
+                        .WithMany("Answers")
+                        .HasForeignKey("QuizAttemptId");
+
                     b.HasOne("exam_system.Domain.Entities.Attempts.AttemptQuestionOptions", "SelectedOption")
                         .WithMany("Answers")
-                        .HasForeignKey("SelectedOptionId");
+                        .HasForeignKey("SelectedOptionId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Attempt");
 
@@ -1021,7 +1071,8 @@ namespace exam_system.Migrations
 
                     b.HasOne("exam_system.Domain.Entities.Questions.Question", "OriginalQuestion")
                         .WithMany("AttemptQuestions")
-                        .HasForeignKey("OriginalQuestionId");
+                        .HasForeignKey("OriginalQuestionId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Attempt");
 
@@ -1039,7 +1090,7 @@ namespace exam_system.Migrations
                     b.HasOne("exam_system.Domain.Entities.Questions.Option", "OriginalOption")
                         .WithMany("AttemptOption")
                         .HasForeignKey("OriginalOptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AttemptQuestion");
@@ -1049,6 +1100,10 @@ namespace exam_system.Migrations
 
             modelBuilder.Entity("exam_system.Domain.Entities.Attempts.QuizAttempt", b =>
                 {
+                    b.HasOne("exam_system.Domain.Entities.Identity.ApplicationUser", null)
+                        .WithMany("QuizAttempts")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("exam_system.Domain.Entities.Quizzes.Quiz", null)
                         .WithMany("QuizAttempts")
                         .HasForeignKey("QuizId")
@@ -1062,9 +1117,9 @@ namespace exam_system.Migrations
                         .IsRequired();
 
                     b.HasOne("exam_system.Domain.Entities.Identity.ApplicationUser", "Student")
-                        .WithMany("QuizAttempts")
+                        .WithMany()
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Quiz");
@@ -1133,13 +1188,13 @@ namespace exam_system.Migrations
                     b.HasOne("exam_system.Domain.Entities.Questions.Option", "Option")
                         .WithMany("QuestionOptions")
                         .HasForeignKey("OptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("exam_system.Domain.Entities.Questions.Question", "Question")
                         .WithMany("QuestionOptions")
                         .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Option");
@@ -1185,7 +1240,7 @@ namespace exam_system.Migrations
 
             modelBuilder.Entity("exam_system.Domain.Entities.Attempts.AttemptQuestion", b =>
                 {
-                    b.Navigation("Answers");
+                    b.Navigation("Answer");
 
                     b.Navigation("Options");
                 });

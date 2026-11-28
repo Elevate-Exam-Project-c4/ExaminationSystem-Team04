@@ -6,6 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddJsonFile(
+    "appsettings.json",
+    optional: false,
+    reloadOnChange: true
+);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

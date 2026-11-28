@@ -18,7 +18,7 @@ namespace exam_system.Domain.Entities.Attempts
         public DateTime AttemptDeadline {  get; set; }
         public int NavigationVersion { get; set; } = 0;
         public int CurrentQuestionIndex { get; set; } = 0;
-        public DateTime SubmittedAt {  get; set; }
+        public DateTime? SubmittedAt {  get; set; }
         public decimal AttemptScore { get; set; }
         public bool IsPassed { get; set; }
         public decimal PassScoreSnapShot { get; set; }
