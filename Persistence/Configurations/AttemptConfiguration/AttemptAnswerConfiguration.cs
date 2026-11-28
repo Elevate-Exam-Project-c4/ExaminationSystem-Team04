@@ -52,3 +52,4 @@ namespace exam_system.Persistence.Configurations.AttemptConfiguration
             builder.HasIndex(x => x.SelectedOptionId);
         }
     }
+}
