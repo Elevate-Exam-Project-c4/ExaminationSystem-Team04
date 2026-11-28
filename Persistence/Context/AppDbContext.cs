@@ -1,3 +1,4 @@
+using exam_system.Domain.Entities.Attempts;
 using exam_system.Domain.Entities.Diplomas;
 using exam_system.Domain.Entities.Enrollments;
 using exam_system.Domain.Entities.Identity;
@@ -28,6 +29,11 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid
     //Quiz
     public DbSet<Quiz> Quizzes { get; set; }
 
+    // Attempts Tables
+    public DbSet<QuizAttempt> QuizAttempts { get; set; }
+    public DbSet<AttemptQuestion> AttemptQuestion { get; set; }
+    public DbSet<AttemptQuestionOptions> AttemptQuestionOptions { get; set; }
+    public DbSet<AttemptAnswer> AttemptAnswer { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
